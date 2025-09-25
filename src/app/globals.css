@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 3.9%;
+    --card: 60 56% 93%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 33 25% 52%;
+    --primary-foreground: 33 25% 95%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 33 25% 88%;
+    --accent-foreground: 33 25% 20%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 33 15% 85%;
+    --input: 33 15% 85%;
+    --ring: 33 25% 52%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  .dark {
+    --background: 240 10% 10%;
+    --foreground: 0 0% 98%;
+    --card: 240 6% 17%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 33 20% 70%;
+    --primary-foreground: 33 25% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 33 20% 30%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 25%;
+    --input: 240 3.7% 25%;
+    --ring: 33 20% 70%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .ruler-container {
+    position: absolute;
+    background-color: hsl(var(--secondary));
+    color: hsl(var(--muted-foreground));
+    font-size: 10px;
+    z-index: 5;
+    overflow: hidden;
+    user-select: none;
+  }
+  .ruler-container.horizontal {
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 30px;
+    border-bottom: 1px solid hsl(var(--border));
+  }
+  .ruler-container.vertical {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30px;
+    border-left: 1px solid hsl(var(--border));
+  }
+  .ruler-number {
+    position: absolute;
+  }
+  .ruler-container.horizontal .ruler-number {
+    top: 4px;
+  }
+  .ruler-container.vertical .ruler-number {
+    right: 50%;
+    transform: translateX(50%) translateY(-50%);
+  }
+  .ruler-tick {
+    position: absolute;
+    background-color: hsl(var(--muted-foreground));
+  }
+  .ruler-container.horizontal .ruler-tick {
+    bottom: 0;
+    width: 1px;
+  }
+  .ruler-container.vertical .ruler-tick {
+    left: 0;
+    height: 1px;
+  }
+}
+
+@layer base {
+  * {
+    /* Use default border instead of non-existent border-border */
+    @apply border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* === Screenplay semantics === */
+.screenplay-preview { direction: rtl; }
+
+.basmala { text-align: left; font-weight: 700; margin: 0 0 2rem 0; }
+
+.scene-header-top-line { display: flex; justify-content: space-between; width: 100%; margin: 0; direction: rtl; }
+.scene-header-3 { text-align: center; font-weight: 700; margin: 0; }
+
+.action { text-align: right; margin: 0.25rem 0; }
+.character { text-align: center; font-weight: 700; text-transform: uppercase; margin: 0 auto; width: 2.5in; }
+.parenthetical { text-align: center; font-style: italic; margin: 0 auto; width: 2.0in; }
+.dialogue { text-align: center; margin: 0 auto 0.3rem auto; width: 2.5in; line-height: 1.2; }
+.transition { text-align: center; font-weight: 700; text-transform: uppercase; margin: 0.25rem 0; }

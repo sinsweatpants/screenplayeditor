@@ -1,0 +1,14 @@
+# اقتراح بنية هيكل أسلم للمشروع
+
+## 1. مبادئ التصميم
+
+تهدف البنية المقترحة إلى تحقيق الأهداف التالية:
+
+*   **فصل الاهتمامات (Separation of Concerns):** فصل واضح بين مكونات واجهة المستخدم، والمنطق البرمجي، والأنماط، والخدمات.
+*   **مركزية المنطق المشترك:** تجميع الكود المشترك (الأنواع، الأدوات المساعدة، الخطافات) في مجلد `lib` (أو `shared`) لسهولة الوصول وإعادة الاستخدام.
+*   **هيكل قائم على الميزات (Feature-based):** تجميع الملفات المتعلقة بميزة معينة (مثل `screenplay`) معًا.
+*   **وضوح نقطة الدخول:** الحفاظ على ملفات التكوين الجذرية وملف الدخول الرئيسي (`main.tsx`) في المستوى الأعلى.
+
+## 2. شجرة المجلدات المقترحة (ASCII Tree)
+
+/home/user/screenplayeditor/ ├── public/ │ └── ... (الأصول الثابتة) ├── src/ │ ├── assets/ │ │ └── screenplay.css │ ├── components/ │ │ ├── ui/ │ │ │ ├── chart.tsx │ │ │ ├── sidebar.tsx │ │ │ └── ... (مكونات UI أخرى) │ │ └── ScreenplayEditor.tsx │ ├── hooks/ │ │ ├── use-mobile.tsx │ │ └── use-toast.ts │ ├── lib/ │ │ ├── queryClient.ts │ │ ├── screenplay/ │ │ │ ├── ScreenplayCoordinator.ts │ │ │ └── types.ts │ │ └── utils.ts │ ├── pages/ │ │ ├── ScreenplayPage.tsx │ │ └── NotFound.tsx │ ├── App.tsx │ ├── index.css │ └── main.tsx ├── .gitignore ├── index.html ├── package.json └── tsconfig.json
