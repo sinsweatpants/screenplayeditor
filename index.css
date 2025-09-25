@@ -12,7 +12,8 @@
 @layer components {
   /* ====== Basmala ====== */
   .basmala {
-    @apply text-left font-amiri text-lg font-bold my-5;
+    @apply text-left text-lg font-bold my-5;
+    font-family: 'Amiri', serif;
   }
 
   /* ====== Scene Headers ====== */
