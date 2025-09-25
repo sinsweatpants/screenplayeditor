@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { useDebounce } from '@/hooks/use-debounce';
-import { getArabicWordSuggestions } from '@/lib/ai-client';
+import { getArabicWordSuggestions } from '@/ai/ai-client';
 import { classifyDocument, ExtractResult } from '@/lib/screenplay-classifier';
 import ScreenplayPreview from './screenplay-preview';
 import Ruler from './ruler';
@@ -24,33 +24,54 @@ export default function Editor() {
   const [parsed, setParsed] = useState<ExtractResult | null>(null);
 
   useEffect(() => {
-    if (debouncedText.trim().length > 2) {
+    const trimmed = debouncedText.trim();
+
+    if (!trimmed) {
+      setSuggestions([]);
+      setParsed(null);
+      setIsLoading(false);
+      return;
+    }
+
+    let cancelled = false;
+
+    if (trimmed.length > 2) {
       setIsLoading(true);
-      getArabicWordSuggestions({ text: debouncedText })
-        .then((output) => {
-          setSuggestions(output.suggestions || []);
+      getArabicWordSuggestions(trimmed)
+        .then((results) => {
+          if (cancelled) return;
+          setSuggestions(results.map((item) => item.text));
         })
-        .catch(console.error)
-        .finally(() => setIsLoading(false));
+        .catch((error) => {
+          if (cancelled) return;
+          console.error('Suggestion error', error);
+          setSuggestions([]);
+        })
+        .finally(() => {
+          if (cancelled) return;
+          setIsLoading(false);
+        });
     } else {
       setSuggestions([]);
+      setIsLoading(false);
     }
-  }, [debouncedText]);
 
-  // Run screenplay classifier whenever debounced text changes
-  useEffect(() => {
-    const trimmed = debouncedText.trim();
-    if (trimmed.length > 0) {
-      try {
-        const res = classifyDocument(trimmed.split(/\r?\n/));
-        setParsed(res);
-      } catch (e) {
-        console.error('Parse error', e);
+    try {
+      const result = classifyDocument(trimmed.split(/\r?\n/));
+      if (!cancelled) {
+        setParsed(result);
+      }
+    } catch (error) {
+      if (!cancelled) {
+        console.error('Parse error', error);
         setParsed(null);
       }
-    } else {
-      setParsed(null);
     }
+
+    return () => {
+      cancelled = true;
+      setIsLoading(false);
+    };
   }, [debouncedText]);
 
   const handleSuggestionClick = (suggestion: string) => {
@@ -76,7 +97,11 @@ export default function Editor() {
             dir="rtl"
             value={text}
             onChange={(e) => setText(e.target.value)}
-            className="w-full h-full resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 font-body text-lg leading-loose"
+            className={[
+              'w-full h-full resize-none border-0 bg-transparent',
+              'focus-visible:ring-0 focus-visible:ring-offset-0',
+              'font-body text-lg leading-loose',
+            ].join(' ')}
             style={{
               paddingTop: '96px',
               paddingBottom: '96px',
